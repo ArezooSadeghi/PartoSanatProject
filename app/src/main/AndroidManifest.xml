@@ -14,6 +14,9 @@
         android:theme="@style/Theme.PartoSanatProject"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.activity.CaseTypeContainerActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.AttachmentContainerActivity"
             android:exported="false" />
         <activity

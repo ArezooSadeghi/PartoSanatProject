@@ -39,6 +39,7 @@ public class UserResult {
         private String description;
         private String barcodePrinter;
         private String saveBarcodePrinter;
+        private String userLoginKey;
         private ManagerAccess manager;
         private ControlAccess control;
         private ExecutiveAccess executive;
@@ -124,6 +125,14 @@ public class UserResult {
 
         public void setSaveBarcodePrinter(String saveBarcodePrinter) {
             this.saveBarcodePrinter = saveBarcodePrinter;
+        }
+
+        public String getUserLoginKey() {
+            return userLoginKey;
+        }
+
+        public void setUserLoginKey(String userLoginKey) {
+            this.userLoginKey = userLoginKey;
         }
 
         public ManagerAccess getManager() {
