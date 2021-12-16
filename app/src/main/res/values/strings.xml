@@ -3,4 +3,16 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="description_hint">توضیحات</string>
+    <string name="note_txt">توجه</string>
+    <string name="confirmation_btn_txt">تایید</string>
+    <string name="save_btn_txt">ذخیره</string>
+    <string name="close_btn_txt">بستن</string>
+    <string name="port_hint">لطفا port خود وارد کنید</string>
+    <string name="ip_hint">لطفا ip خود را وارد کنید</string>
+    <string name="center_name_hint">لطفا نام مرکز را وارد کنید</string>
+    <string name="center_info">اطلاعات مرکز</string>
+    <string name="required_ip">لطفا ip را وارد کنید</string>
+    <string name="fill_required_fields">لطفا فیلدهای مربوطه را پر کنید</string>
+    <string name="wrong_ip_format">فرمت ip نادرست است</string>
+    <string name="duplicate_name">نام مرکز تکراری است</string>
 </resources>
