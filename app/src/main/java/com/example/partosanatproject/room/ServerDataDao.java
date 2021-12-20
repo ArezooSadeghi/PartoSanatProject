@@ -1,4 +1,4 @@
-package com.example.partosanatproject;
+package com.example.partosanatproject.room;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

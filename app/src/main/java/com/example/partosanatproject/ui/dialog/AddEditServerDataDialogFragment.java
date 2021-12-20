@@ -15,9 +15,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.partosanatproject.R;
 import com.example.partosanatproject.databinding.FragmentAddEditServerDataDialogBinding;
+import com.example.partosanatproject.model.ServerData;
+import com.example.partosanatproject.utils.Converter;
 import com.example.partosanatproject.utils.Others;
 import com.example.partosanatproject.viewmodel.LoginViewModel;
 
+import java.util.List;
 import java.util.Objects;
 
 public class AddEditServerDataDialogFragment extends DialogFragment {
@@ -104,7 +107,7 @@ public class AddEditServerDataDialogFragment extends DialogFragment {
                 handleError(getString(R.string.fill_required_fields));
             } else if (ipAddress.length() < 7 || !Others.hasThreeDots(ipAddress) || Others.hasEnglishLetter(ipAddress) || Others.hasEnglishLetter(port)) {
                 handleError(getString(R.string.wrong_ip_format));
-            } /*else {
+            } else {
                 if (duplicateCenterName(centerName) & !centerName.equals(AddEditServerDataDialogFragment.this.centerName)) {
                     handleError(getString(R.string.duplicate_name));
                 } else {
@@ -116,10 +119,9 @@ public class AddEditServerDataDialogFragment extends DialogFragment {
                         viewModel.delete(preServerData.getCenterName());
                     }
                     viewModel.insert(serverDataTwo);
-                    viewModel.getInsertNotifyServerDataList().setValue(true);
                     dismiss();
                 }
-            }*/
+            }
         });
 
         binding.edTxtCenterName.setOnEditorActionListener((textView, actionID, keyEvent) -> {
@@ -137,18 +139,18 @@ public class AddEditServerDataDialogFragment extends DialogFragment {
         });
 
         binding.btnClose.setOnClickListener(view -> {
-           /* List<ServerData> serverDataList = viewModel.getServerDataListMutableLiveData().getValue();
+            List<ServerData> serverDataList = viewModel.getServerDataListMutableLiveData().getValue();
             if (serverDataList == null || serverDataList.size() == 0) {
                 dismiss();
                 WarningDialogFragment fragment = WarningDialogFragment.newInstance(getString(R.string.required_ip));
                 fragment.show(getParentFragmentManager(), WarningDialogFragment.TAG);
             } else {
                 dismiss();
-            }*/
+            }
         });
     }
 
-    /*private boolean duplicateCenterName(String input) {
+    private boolean duplicateCenterName(String input) {
         List<ServerData> serverDataList = viewModel.getServerDataListMutableLiveData().getValue();
         assert serverDataList != null;
         if (serverDataList.size() > 0) {
@@ -159,10 +161,10 @@ public class AddEditServerDataDialogFragment extends DialogFragment {
             }
         }
         return false;
-    }*/
+    }
 
     private void handleError(String msg) {
         ErrorDialogFragment fragment = ErrorDialogFragment.newInstance(msg);
         fragment.show(getParentFragmentManager(), ErrorDialogFragment.TAG);
     }
-}/**/
+}

@@ -126,6 +126,15 @@
                 app:layout_constraintTop_toTopOf="@id/spinner"
                 app:tint="@color/black" />
 
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/logo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinner" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
@@ -142,21 +151,15 @@
             app:layout_constraintBottom_toBottomOf="@id/layoutDialog"
             app:layout_constraintTop_toBottomOf="@id/layoutDialog" />
 
-        <RelativeLayout
-            android:id="@+id/loading_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.4"
-            android:background="#696969"
-            android:visibility="gone">
-
-            <ProgressBar
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerInParent="true"
-                android:indeterminate="true" />
-
-        </RelativeLayout>
+        <ProgressBar
+            android:id="@+id/progress_bar_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

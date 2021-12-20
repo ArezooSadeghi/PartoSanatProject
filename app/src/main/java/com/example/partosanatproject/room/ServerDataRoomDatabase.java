@@ -1,4 +1,4 @@
-package com.example.partosanatproject;
+package com.example.partosanatproject.room;
 
 import android.content.Context;
 

@@ -17,6 +17,7 @@ import com.example.partosanatproject.R;
 import com.example.partosanatproject.adapter.ServerDataAdapter;
 import com.example.partosanatproject.databinding.FragmentServerDataBinding;
 import com.example.partosanatproject.model.ServerData;
+import com.example.partosanatproject.ui.dialog.AddEditServerDataDialogFragment;
 import com.example.partosanatproject.viewmodel.LoginViewModel;
 
 import java.util.List;
@@ -49,6 +50,7 @@ public class ServerDataFragment extends Fragment {
                 false);
 
         initViews();
+        handleEvents();
 
         return binding.getRoot();
     }
@@ -73,7 +75,28 @@ public class ServerDataFragment extends Fragment {
         binding.recyclerViewServerData.setAdapter(adapter);
     }
 
-    private void setupObserver() {
+    private void handleEvents() {
+        binding.fabAdd.setOnClickListener(v -> {
+            AddEditServerDataDialogFragment fragment = AddEditServerDataDialogFragment.newInstance("", "", "", true);
+            fragment.show(getChildFragmentManager(), AddEditServerDataDialogFragment.TAG);
+        });
+    }
 
+    private void setupObserver() {
+        viewModel.getDeleteClicked().observe(getViewLifecycleOwner(), serverData -> {
+            viewModel.delete(serverData.getCenterName());
+        });
+
+        viewModel.getEditClicked().observe(getViewLifecycleOwner(), serverData -> {
+            AddEditServerDataDialogFragment fragment = AddEditServerDataDialogFragment.newInstance(serverData.getCenterName(), serverData.getIpAddress(), serverData.getPort(), false);
+            fragment.show(getChildFragmentManager(), AddEditServerDataDialogFragment.TAG);
+        });
+
+        viewModel.getServerDataListMutableLiveData().observe(getViewLifecycleOwner(), serverDataList -> {
+            setupAdapter(serverDataList);
+            if (serverDataList == null || serverDataList.size() == 0) {
+                getActivity().finish();
+            }
+        });
     }
 }

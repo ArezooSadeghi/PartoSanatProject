@@ -68,7 +68,6 @@ public class SuccessDialogFragment extends DialogFragment {
 
     private void handleEvents() {
         binding.btnClose.setOnClickListener(v -> {
-            getActivity().finish();
             dismiss();
         });
     }

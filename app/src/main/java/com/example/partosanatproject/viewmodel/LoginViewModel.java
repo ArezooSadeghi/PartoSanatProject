@@ -4,10 +4,13 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.example.partosanatproject.model.ServerData;
 import com.example.partosanatproject.model.UserResult;
 import com.example.partosanatproject.repository.PartoSanatRepository;
+
+import java.util.List;
 
 public class LoginViewModel extends AndroidViewModel {
     private PartoSanatRepository repository;
@@ -15,7 +18,7 @@ public class LoginViewModel extends AndroidViewModel {
     private SingleLiveEvent<String> noConnectionExceptionHappenSingleLiveEvent;
     private SingleLiveEvent<String> timeoutExceptionHappenSingleLiveEvent;
     private SingleLiveEvent<String> wrongIpAddressSingleLiveEvent;
-
+    private LiveData<List<ServerData>> serverDataListMutableLiveData;
     private SingleLiveEvent<ServerData> editClicked = new SingleLiveEvent<>();
     private SingleLiveEvent<ServerData> deleteClicked = new SingleLiveEvent<>();
 
@@ -26,6 +29,7 @@ public class LoginViewModel extends AndroidViewModel {
         noConnectionExceptionHappenSingleLiveEvent = repository.getNoConnectionExceptionHappenSingleLiveEvent();
         timeoutExceptionHappenSingleLiveEvent = repository.getTimeoutExceptionHappenSingleLiveEvent();
         wrongIpAddressSingleLiveEvent = repository.getWrongIpAddressSingleLiveEvent();
+        serverDataListMutableLiveData = repository.getServerDataListMutableLiveData();
     }
 
     public SingleLiveEvent<UserResult> getLoginResultSingleLiveEvent() {
@@ -42,6 +46,10 @@ public class LoginViewModel extends AndroidViewModel {
 
     public SingleLiveEvent<String> getWrongIpAddressSingleLiveEvent() {
         return wrongIpAddressSingleLiveEvent;
+    }
+
+    public LiveData<List<ServerData>> getServerDataListMutableLiveData() {
+        return serverDataListMutableLiveData;
     }
 
     public SingleLiveEvent<ServerData> getEditClicked() {
@@ -71,6 +79,4 @@ public class LoginViewModel extends AndroidViewModel {
     public ServerData getServerData(String centerName) {
         return repository.getServerData(centerName);
     }
-
-
 }

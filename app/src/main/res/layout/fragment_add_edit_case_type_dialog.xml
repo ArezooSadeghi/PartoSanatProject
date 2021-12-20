@@ -29,7 +29,7 @@
                 android:background="@drawable/title_server_data_bg"
                 android:fontFamily="@font/yekan"
                 android:padding="10dp"
-                android:text="@string/center_info"
+                android:text="گروه ها"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -38,14 +38,14 @@
                 app:layout_constraintWidth_default="spread" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/center_name_container"
+                android:id="@+id/case_type_container"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
-                android:hint="@string/center_name_hint"
+                android:hint="لطفا نام گروه را وارد گنید"
                 android:textColorHint="@color/dim_gray"
                 app:boxStrokeColor="@color/dim_gray"
                 app:hintTextColor="@color/dim_gray"
@@ -55,7 +55,7 @@
                 app:layout_constraintWidth_default="spread">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_txt_center_name"
+                    android:id="@+id/ed_txt_case_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/yekan"
@@ -67,67 +67,16 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ip_container"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+            <CheckBox
+                android:id="@+id/check_box_need_register_customer"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
-                android:hint="@string/ip_hint"
-                android:textColorHint="@color/dim_gray"
-                app:boxStrokeColor="@color/dim_gray"
-                app:hintTextColor="@color/dim_gray"
+                android:fontFamily="@font/yekan"
+                android:text="نیاز به ثبت مشتری ندارد"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/center_name_container"
-                app:layout_constraintWidth_default="spread">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_txt_ip"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/yekan"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textColor="@color/black"
-                    android:textCursorDrawable="@drawable/custom_cursor"
-                    android:textSize="12sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/port_container"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:hint="@string/port_hint"
-                android:textColorHint="@color/dim_gray"
-                app:boxStrokeColor="@color/dim_gray"
-                app:hintTextColor="@color/dim_gray"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ip_container"
-                app:layout_constraintWidth_default="spread">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_txt_port"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/yekan"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textColor="@color/black"
-                    android:textCursorDrawable="@drawable/custom_cursor"
-                    android:textSize="12sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toBottomOf="@id/case_type_container" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -15,4 +15,8 @@
     <string name="fill_required_fields">لطفا فیلدهای مربوطه را پر کنید</string>
     <string name="wrong_ip_format">فرمت ip نادرست است</string>
     <string name="duplicate_name">نام مرکز تکراری است</string>
+    <string name="txt_one">لجستیک و مدیریت پروژه های ساخت و تولید</string>
+    <string name="txt_two">نظارت و بازرسی عملیات</string>
+    <string name="menu_title">سیستم جامع مدیریت تولید</string>
+    <string name="title_four">مستندات و فانکشن های خاص</string>
 </resources>
