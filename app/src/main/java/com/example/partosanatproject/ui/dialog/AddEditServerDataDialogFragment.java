@@ -32,7 +32,6 @@ public class AddEditServerDataDialogFragment extends DialogFragment {
     private static final String ARGS_IP = "ip";
     private static final String ARGS_PORT = "port";
     private static final String ARGS_IS_ADD = "isAdd";
-
     public static final String TAG = AddEditServerDataDialogFragment.class.getSimpleName();
 
     public static AddEditServerDataDialogFragment newInstance(String centerName, String ip, String port, boolean isAdd) {
@@ -69,9 +68,8 @@ public class AddEditServerDataDialogFragment extends DialogFragment {
                 .setView(binding.getRoot())
                 .create();
 
-        if (dialog.getWindow() != null) {
+        if (dialog.getWindow() != null)
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        }
 
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
@@ -84,7 +82,6 @@ public class AddEditServerDataDialogFragment extends DialogFragment {
     }
 
     private void initViews() {
-        assert getArguments() != null;
         centerName = getArguments().getString(ARGS_CENTER_NAME);
         String ip = getArguments().getString(ARGS_IP);
         String port = getArguments().getString(ARGS_PORT);
@@ -103,14 +100,14 @@ public class AddEditServerDataDialogFragment extends DialogFragment {
             String centerName = Objects.requireNonNull(binding.edTxtCenterName.getText()).toString();
             String ipAddress = Objects.requireNonNull(binding.edTxtIp.getText()).toString();
             String port = Objects.requireNonNull(binding.edTxtPort.getText()).toString();
-            if (centerName.isEmpty() || ipAddress.isEmpty() || port.isEmpty()) {
+            if (centerName.isEmpty() || ipAddress.isEmpty() || port.isEmpty())
                 handleError(getString(R.string.fill_required_fields));
-            } else if (ipAddress.length() < 7 || !Others.hasThreeDots(ipAddress) || Others.hasEnglishLetter(ipAddress) || Others.hasEnglishLetter(port)) {
+            else if (ipAddress.length() < 7 || !Others.hasThreeDots(ipAddress) || Others.hasEnglishLetter(ipAddress) || Others.hasEnglishLetter(port))
                 handleError(getString(R.string.wrong_ip_format));
-            } else {
-                if (duplicateCenterName(centerName) & !centerName.equals(AddEditServerDataDialogFragment.this.centerName)) {
+            else {
+                if (duplicateCenterName(centerName) & !centerName.equals(AddEditServerDataDialogFragment.this.centerName))
                     handleError(getString(R.string.duplicate_name));
-                } else {
+                else {
                     ServerData serverDataTwo = new ServerData(centerName, Converter.perToEnDigitConverter(ipAddress), Converter.perToEnDigitConverter(port));
                     assert getArguments() != null;
                     boolean isAdd = getArguments().getBoolean(ARGS_IS_ADD);
@@ -125,16 +122,14 @@ public class AddEditServerDataDialogFragment extends DialogFragment {
         });
 
         binding.edTxtCenterName.setOnEditorActionListener((textView, actionID, keyEvent) -> {
-            if (actionID == 0 || actionID == EditorInfo.IME_ACTION_DONE) {
+            if (actionID == 0 || actionID == EditorInfo.IME_ACTION_DONE)
                 binding.edTxtIp.requestFocus();
-            }
             return false;
         });
 
         binding.edTxtIp.setOnEditorActionListener((textView, actionID, keyEvent) -> {
-            if (actionID == 0 || actionID == EditorInfo.IME_ACTION_DONE) {
+            if (actionID == 0 || actionID == EditorInfo.IME_ACTION_DONE)
                 binding.edTxtPort.requestFocus();
-            }
             return false;
         });
 
@@ -144,15 +139,13 @@ public class AddEditServerDataDialogFragment extends DialogFragment {
                 dismiss();
                 WarningDialogFragment fragment = WarningDialogFragment.newInstance(getString(R.string.required_ip));
                 fragment.show(getParentFragmentManager(), WarningDialogFragment.TAG);
-            } else {
+            } else
                 dismiss();
-            }
         });
     }
 
     private boolean duplicateCenterName(String input) {
         List<ServerData> serverDataList = viewModel.getServerDataListMutableLiveData().getValue();
-        assert serverDataList != null;
         if (serverDataList.size() > 0) {
             for (ServerData serverData : serverDataList) {
                 if (serverData.getCenterName().equals(input)) {

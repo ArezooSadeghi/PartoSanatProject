@@ -83,9 +83,7 @@ public class ServerDataFragment extends Fragment {
     }
 
     private void setupObserver() {
-        viewModel.getDeleteClicked().observe(getViewLifecycleOwner(), serverData -> {
-            viewModel.delete(serverData.getCenterName());
-        });
+        viewModel.getDeleteClicked().observe(getViewLifecycleOwner(), serverData -> viewModel.delete(serverData.getCenterName()));
 
         viewModel.getEditClicked().observe(getViewLifecycleOwner(), serverData -> {
             AddEditServerDataDialogFragment fragment = AddEditServerDataDialogFragment.newInstance(serverData.getCenterName(), serverData.getIpAddress(), serverData.getPort(), false);

@@ -19,4 +19,12 @@
     <string name="txt_two">نظارت و بازرسی عملیات</string>
     <string name="menu_title">سیستم جامع مدیریت تولید</string>
     <string name="title_four">مستندات و فانکشن های خاص</string>
+    <string name="delete_item_title">حذف</string>
+    <string name="edit_item_title">ویرایش</string>
+    <string name="add_sub_group_item_title">افزودن زیر گروه</string>
+    <string name="success_delete_case_type_msg">حذف گروه موفقیت آمیز بود</string>
+    <string name="question_delete_case_type_msg">آیا می خواهید گروه مربوطه را حذف کنید؟</string>
+    <string name="log_out_item_title">خروج از حساب کاربری</string>
+    <string name="case_types_item_title">گروه ها</string>
+    <string name="fill_case_type_name">لطفا نام گروه را وارد کنید</string>
 </resources>

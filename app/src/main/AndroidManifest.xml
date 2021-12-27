@@ -20,9 +20,6 @@
             android:name=".ui.activity.CaseTypeContainerActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.AttachmentContainerActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.activity.MenuContainerActivity"
             android:exported="false" />
         <activity

@@ -39,6 +39,7 @@ public class PartoSanatRepository {
     private SingleLiveEvent<String> timeoutExceptionHappenSingleLiveEvent = new SingleLiveEvent<>();
     private SingleLiveEvent<String> wrongIpAddressSingleLiveEvent = new SingleLiveEvent<>();
     private SingleLiveEvent<CaseTypeResult> caseTypesResultSingleLiveEvent = new SingleLiveEvent<>();
+    private SingleLiveEvent<CaseTypeResult> caseTypeInfoResultSingleLiveEvent = new SingleLiveEvent<>();
     private SingleLiveEvent<CaseTypeResult> addCaseTypeResultSingleLiveEvent = new SingleLiveEvent<>();
     private SingleLiveEvent<CaseTypeResult> editCaseTypeResultSingleLiveEvent = new SingleLiveEvent<>();
     private SingleLiveEvent<CaseTypeResult> deleteCaseTypeResultSingleLiveEvent = new SingleLiveEvent<>();
@@ -97,6 +98,10 @@ public class PartoSanatRepository {
         return caseTypesResultSingleLiveEvent;
     }
 
+    public SingleLiveEvent<CaseTypeResult> getCaseTypeInfoResultSingleLiveEvent() {
+        return caseTypeInfoResultSingleLiveEvent;
+    }
+
     public SingleLiveEvent<CaseTypeResult> getAddCaseTypeResultSingleLiveEvent() {
         return addCaseTypeResultSingleLiveEvent;
     }
@@ -151,6 +156,36 @@ public class PartoSanatRepository {
                         Gson gson = new Gson();
                         CaseTypeResult caseTypeResult = gson.fromJson(response.errorBody().string(), CaseTypeResult.class);
                         caseTypesResultSingleLiveEvent.setValue(caseTypeResult);
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CaseTypeResult> call, Throwable t) {
+                if (t instanceof NoConnectivityException) {
+                    noConnectionExceptionHappenSingleLiveEvent.setValue(t.getMessage());
+                } else if (t instanceof SocketTimeoutException) {
+                    timeoutExceptionHappenSingleLiveEvent.setValue("اتصال به اینترنت با خطا مواجه شد");
+                } else {
+                    wrongIpAddressSingleLiveEvent.setValue("سرور موجود نمی باشد");
+                }
+            }
+        });
+    }
+
+    public void fetchCaseTypeInfo(String path, String userLoginKey, int caseTypeID) {
+        partoSanatService.fetchCaseTypeInfo(path, userLoginKey, caseTypeID).enqueue(new Callback<CaseTypeResult>() {
+            @Override
+            public void onResponse(Call<CaseTypeResult> call, Response<CaseTypeResult> response) {
+                if (response.isSuccessful()) {
+                    caseTypeInfoResultSingleLiveEvent.setValue(response.body());
+                } else {
+                    try {
+                        Gson gson = new Gson();
+                        CaseTypeResult caseTypeResult = gson.fromJson(response.errorBody().string(), CaseTypeResult.class);
+                        caseTypeInfoResultSingleLiveEvent.setValue(caseTypeResult);
                     } catch (IOException e) {
                         Log.e(TAG, e.getMessage());
                     }

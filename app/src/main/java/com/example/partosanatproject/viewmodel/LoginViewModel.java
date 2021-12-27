@@ -60,12 +60,12 @@ public class LoginViewModel extends AndroidViewModel {
         return deleteClicked;
     }
 
-    public void login(String path, UserResult.UserLoginParameter parameter) {
-        repository.login(path, parameter);
-    }
-
     public void getPartoSanatServiceUserResult(String baseUrl) {
         repository.getPartoSanatServiceUserResult(baseUrl);
+    }
+
+    public void login(String path, UserResult.UserLoginParameter parameter) {
+        repository.login(path, parameter);
     }
 
     public void insert(ServerData serverData) {

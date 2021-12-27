@@ -4,17 +4,20 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.ListPopupWindow;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.example.partosanatproject.R;
 import com.example.partosanatproject.model.Dir;
 import com.example.partosanatproject.viewmodel.CaseTypeViewModel;
-import com.skydoves.powermenu.PowerMenu;
-import com.skydoves.powermenu.PowerMenuItem;
+
+import java.util.ArrayList;
 
 import tellh.com.recyclertreeview_lib.TreeNode;
 import tellh.com.recyclertreeview_lib.TreeViewBinder;
@@ -42,7 +45,7 @@ public class DirectoryNodeBinder extends TreeViewBinder<DirectoryNodeBinder.Dire
 
         Drawable folderDrawable = context.getResources().getDrawable(R.drawable.ic_folder);
         folderDrawable = DrawableCompat.wrap(folderDrawable);
-        DrawableCompat.setTint(folderDrawable, Color.BLACK);
+        DrawableCompat.setTint(folderDrawable, Color.parseColor("#E1C16E"));
         DrawableCompat.setTintMode(folderDrawable, PorterDuff.Mode.SRC_IN);
         directoryNodeHolder.tvDirName.setCompoundDrawablesWithIntrinsicBounds(null, null, folderDrawable, null);
 
@@ -54,27 +57,43 @@ public class DirectoryNodeBinder extends TreeViewBinder<DirectoryNodeBinder.Dire
             directoryNodeHolder.ivArrow.setVisibility(View.GONE);
             Drawable fileDrawable = context.getResources().getDrawable(R.drawable.ic_file);
             fileDrawable = DrawableCompat.wrap(fileDrawable);
-            DrawableCompat.setTint(fileDrawable, Color.BLACK);
+            DrawableCompat.setTint(fileDrawable, Color.parseColor("#FFBF00"));
             DrawableCompat.setTintMode(fileDrawable, PorterDuff.Mode.SRC_IN);
             directoryNodeHolder.tvDirName.setCompoundDrawablesWithIntrinsicBounds(null, null, fileDrawable, null);
         } else directoryNodeHolder.ivArrow.setVisibility(View.VISIBLE);
 
-        directoryNodeHolder.ivMore.setOnClickListener(v -> {
-            PowerMenu powerMenu = new PowerMenu.Builder(context)
-                    .addItem(new PowerMenuItem("حذف"))
-                    .addItem(new PowerMenuItem("ویرایش"))
-                    .build();
+        directoryNodeHolder.itemView.setOnLongClickListener(view -> {
+            ListPopupWindow listPopupWindow = new ListPopupWindow(context, null, R.attr.listPopupWindowStyle);
 
-            powerMenu.setOnMenuItemClickListener((position, item) -> {
-                if (position == 0) {
-                    viewModel.getDeleteClicked().setValue(dirNode.getDirID());
-                    powerMenu.dismiss();
-                } else {
-                    viewModel.getEditClicked().setValue(dirNode.getDirID());
-                    powerMenu.dismiss();
+            listPopupWindow.setOnItemClickListener((adapterView, view1, position, id) -> {
+                switch (position) {
+                    case 0:
+                        viewModel.getDeleteClicked().setValue(dirNode.getDirID());
+                        break;
+                    case 1:
+                        viewModel.getEditClicked().setValue(dirNode.getDirID());
+                        break;
+                    case 2:
+                        viewModel.getAddSubGroupClicked().setValue(dirNode.getDirID());
+                        break;
                 }
+                listPopupWindow.dismiss();
             });
-            powerMenu.showAsDropDown(v);
+
+            listPopupWindow.setDropDownGravity(Gravity.RIGHT);
+            listPopupWindow.setContentWidth(400);
+            listPopupWindow.setAnchorView(directoryNodeHolder.itemView);
+            ArrayList<String> items = new ArrayList<String>() {
+                {
+                    add(context.getString(R.string.delete_item_title));
+                    add(context.getString(R.string.edit_item_title));
+                    add(context.getString(R.string.add_sub_group_item_title));
+                }
+            };
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.list_popup_window_item, items);
+            listPopupWindow.setAdapter(adapter);
+            listPopupWindow.show();
+            return true;
         });
     }
 

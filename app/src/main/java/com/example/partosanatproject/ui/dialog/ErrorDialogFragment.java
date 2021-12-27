@@ -50,9 +50,8 @@ public class ErrorDialogFragment extends DialogFragment {
                 .setView(binding.getRoot())
                 .create();
 
-        if (dialog.getWindow() != null) {
+        if (dialog.getWindow() != null)
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        }
 
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
@@ -61,7 +60,6 @@ public class ErrorDialogFragment extends DialogFragment {
     }
 
     private void initViews() {
-        assert getArguments() != null;
         String msg = getArguments().getString(ARGS_MSG);
         binding.txtMsg.setText(msg);
     }

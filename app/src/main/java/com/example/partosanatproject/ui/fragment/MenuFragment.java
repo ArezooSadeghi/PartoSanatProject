@@ -50,8 +50,8 @@ public class MenuFragment extends Fragment {
     private void handleEvents() {
         binding.ivMore.setOnClickListener(view -> {
             PowerMenu powerMenu = new PowerMenu.Builder(requireContext())
-                    .addItem(new PowerMenuItem("خروج از حساب کاربری"))
-                    .addItem(new PowerMenuItem("گروه ها"))
+                    .addItem(new PowerMenuItem(getString(R.string.log_out_item_title)))
+                    .addItem(new PowerMenuItem(getString(R.string.case_types_item_title)))
                     .build();
 
             powerMenu.setOnMenuItemClickListener((position, item) -> {
@@ -59,12 +59,11 @@ public class MenuFragment extends Fragment {
                     PartoSanatPreferences.setUserLoginKey(getContext(), null);
                     Intent starter = LoginContainerActivity.start(getContext());
                     startActivity(starter);
-                    powerMenu.dismiss();
                 } else {
                     Intent starter = CaseTypeContainerActivity.start(getContext());
                     startActivity(starter);
-                    powerMenu.dismiss();
                 }
+                powerMenu.dismiss();
             });
             powerMenu.showAsDropDown(view);
         });

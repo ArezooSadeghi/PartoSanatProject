@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +23,7 @@ import com.example.partosanatproject.model.Dir;
 import com.example.partosanatproject.model.ServerData;
 import com.example.partosanatproject.ui.dialog.AddEditCaseTypeDialogFragment;
 import com.example.partosanatproject.ui.dialog.ErrorDialogFragment;
+import com.example.partosanatproject.ui.dialog.QuestionDialogFragment;
 import com.example.partosanatproject.ui.dialog.SuccessDialogFragment;
 import com.example.partosanatproject.utils.Converter;
 import com.example.partosanatproject.utils.PartoSanatPreferences;
@@ -42,6 +42,8 @@ public class CaseTypeFragment extends Fragment {
     private List<TreeNode> treeNodeList;
     private List<CaseTypeResult.CaseTypeInfo> caseTypeInfoList;
     private TreeViewAdapter adapter;
+    private String userLoginKey;
+    private int _CaseTypeID;
 
     public static CaseTypeFragment newInstance() {
         CaseTypeFragment fragment = new CaseTypeFragment();
@@ -85,17 +87,12 @@ public class CaseTypeFragment extends Fragment {
     }
 
     private void initVariables() {
-        treeNodeList = new ArrayList<>();
-        caseTypeInfoList = new ArrayList<>();
-    }
-
-    private void fetchCaseTypes() {
-        String userLoginKey = PartoSanatPreferences.getUserLoginKey(getContext());
+        userLoginKey = PartoSanatPreferences.getUserLoginKey(getContext());
         String centerName = PartoSanatPreferences.getCenterName(getContext());
         ServerData serverData = viewModel.getServerData(centerName);
         viewModel.getPartoSanatServiceCaseTypeResult(serverData.getIpAddress() + ":" + serverData.getPort());
-        String path = "/api/v1/CaseType/List";
-        viewModel.fetchCaseTypes(path, userLoginKey);
+        treeNodeList = new ArrayList<>();
+        caseTypeInfoList = new ArrayList<>();
     }
 
     private void initViews() {
@@ -109,7 +106,7 @@ public class CaseTypeFragment extends Fragment {
 
     private void handleEvents() {
         binding.fabAdd.setOnClickListener(v -> {
-            AddEditCaseTypeDialogFragment fragment = AddEditCaseTypeDialogFragment.newInstance();
+            AddEditCaseTypeDialogFragment fragment = AddEditCaseTypeDialogFragment.newInstance(0, 0);
             fragment.show(getParentFragmentManager(), AddEditCaseTypeDialogFragment.TAG);
         });
     }
@@ -118,11 +115,8 @@ public class CaseTypeFragment extends Fragment {
         adapter.setOnTreeNodeListener(new TreeViewAdapter.OnTreeNodeListener() {
             @Override
             public boolean onClick(TreeNode node, RecyclerView.ViewHolder holder) {
-                if (!node.isLeaf()) {
+                if (!node.isLeaf())
                     onToggle(!node.isExpand(), holder);
-                } else {
-                    //TODO
-                }
                 return false;
             }
 
@@ -150,12 +144,12 @@ public class CaseTypeFragment extends Fragment {
                             addChild(dirNode, caseTypeInfo.getCaseTypeID());
                         }
                     }
+
                     setupAdapter();
                     handleNodeEvents();
 
-                } else {
+                } else
                     handleError(caseTypeResult.getError());
-                }
             }
         });
 
@@ -165,28 +159,39 @@ public class CaseTypeFragment extends Fragment {
             fetchCaseTypes();
         });
 
-        viewModel.getDeleteClicked().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer caseTypeID) {
-                deleteCaseType(caseTypeID);
+        viewModel.getDeleteClicked().observe(getViewLifecycleOwner(), caseTypeID -> {
+            _CaseTypeID = caseTypeID;
+            QuestionDialogFragment fragment = QuestionDialogFragment.newInstance(getString(R.string.question_delete_case_type_msg));
+            fragment.show(getParentFragmentManager(), QuestionDialogFragment.TAG);
+        });
+
+        viewModel.getYesDeleteClicked().observe(getViewLifecycleOwner(), yesDeleteClicked -> deleteCaseType(_CaseTypeID));
+
+        viewModel.getDeleteCaseTypeResultSingleLiveEvent().observe(getViewLifecycleOwner(), caseTypeResult -> {
+            if (caseTypeResult != null) {
+                if (caseTypeResult.getErrorCode().equals("0")) {
+                    showSuccessDialog(getString(R.string.success_delete_case_type_msg));
+                    caseTypeInfoList = new ArrayList<>();
+                    treeNodeList = new ArrayList<>();
+                    fetchCaseTypes();
+                } else
+                    handleError(caseTypeResult.getError());
             }
         });
 
-        viewModel.getDeleteCaseTypeResultSingleLiveEvent().observe(getViewLifecycleOwner(), new Observer<CaseTypeResult>() {
-            @Override
-            public void onChanged(CaseTypeResult caseTypeResult) {
-                if (caseTypeResult != null) {
-                    if (caseTypeResult.getErrorCode().equals("0")) {
-                        showSuccessDialog("حذف گروه موفقیت آمیز بود");
-                        caseTypeInfoList = new ArrayList<>();
-                        treeNodeList = new ArrayList<>();
-                        fetchCaseTypes();
-                    } else {
-                        handleError(caseTypeResult.getError());
-                    }
-                }
-            }
+        viewModel.getEditClicked().observe(getViewLifecycleOwner(), caseTypeID -> {
+            AddEditCaseTypeDialogFragment fragment = AddEditCaseTypeDialogFragment.newInstance(caseTypeID, 0);
+            fragment.show(getParentFragmentManager(), AddEditCaseTypeDialogFragment.TAG);
         });
+
+        viewModel.getAddSubGroupClicked().observe(getViewLifecycleOwner(), caseTypeID -> {
+            AddEditCaseTypeDialogFragment fragment = AddEditCaseTypeDialogFragment.newInstance(0, caseTypeID);
+            fragment.show(getParentFragmentManager(), AddEditCaseTypeDialogFragment.TAG);
+        });
+
+        viewModel.getNoConnectionExceptionHappenSingleLiveEvent().observe(getViewLifecycleOwner(), this::handleError);
+
+        viewModel.getTimeoutExceptionHappenSingleLiveEvent().observe(getViewLifecycleOwner(), this::handleError);
     }
 
     private void addChild(TreeNode treeNode, int caseTypeID) {
@@ -212,11 +217,12 @@ public class CaseTypeFragment extends Fragment {
     }
 
     private void deleteCaseType(int caseTypeID) {
-        String userLoginKey = PartoSanatPreferences.getUserLoginKey(getContext());
-        String centerName = PartoSanatPreferences.getCenterName(getContext());
-        ServerData serverData = viewModel.getServerData(centerName);
-        viewModel.getPartoSanatServiceCaseTypeResult(serverData.getIpAddress() + ":" + serverData.getPort());
         String path = "/api/v1/CaseType/Delete";
         viewModel.deleteCaseType(path, userLoginKey, caseTypeID);
+    }
+
+    private void fetchCaseTypes() {
+        String path = "/api/v1/CaseType/List";
+        viewModel.fetchCaseTypes(path, userLoginKey);
     }
 }

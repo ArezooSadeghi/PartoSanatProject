@@ -29,4 +29,7 @@ public interface PartoSanatService {
 
     @GET("{path}")
     Call<CaseTypeResult> fetchCaseTypes(@Path("path") String path, @Header("userLoginKey") String userLoginKey);
+
+    @GET("{path}")
+    Call<CaseTypeResult> fetchCaseTypeInfo(@Path("path") String path, @Header("userLoginKey") String userLoginKey, @Query("caseTypeID") int caseTypeID);
 }

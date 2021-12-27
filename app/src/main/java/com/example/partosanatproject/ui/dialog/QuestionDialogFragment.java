@@ -10,18 +10,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.partosanatproject.R;
-import com.example.partosanatproject.databinding.FragmentWarningDialogBinding;
+import com.example.partosanatproject.databinding.FragmentQuestionDialogBinding;
+import com.example.partosanatproject.viewmodel.CaseTypeViewModel;
 
-public class WarningDialogFragment extends DialogFragment {
-    private FragmentWarningDialogBinding binding;
+public class QuestionDialogFragment extends DialogFragment {
+    private FragmentQuestionDialogBinding binding;
+    private CaseTypeViewModel viewModel;
 
     private static final String ARGS_MSG = "msg";
-    public static final String TAG = WarningDialogFragment.class.getSimpleName();
+    public static final String TAG = QuestionDialogFragment.class.getSimpleName();
 
-    public static WarningDialogFragment newInstance(String msg) {
-        WarningDialogFragment fragment = new WarningDialogFragment();
+    public static QuestionDialogFragment newInstance(String msg) {
+        QuestionDialogFragment fragment = new QuestionDialogFragment();
         Bundle args = new Bundle();
         args.putString(ARGS_MSG, msg);
         fragment.setArguments(args);
@@ -31,6 +34,7 @@ public class WarningDialogFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        createViewModel();
     }
 
     @NonNull
@@ -38,7 +42,7 @@ public class WarningDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
                 LayoutInflater.from(getContext()),
-                R.layout.fragment_warning_dialog,
+                R.layout.fragment_question_dialog,
                 null,
                 false);
 
@@ -59,15 +63,21 @@ public class WarningDialogFragment extends DialogFragment {
         return dialog;
     }
 
+    private void createViewModel() {
+        viewModel = new ViewModelProvider(requireActivity()).get(CaseTypeViewModel.class);
+    }
+
     private void initViews() {
+        assert getArguments() != null;
         String msg = getArguments().getString(ARGS_MSG);
         binding.txtMsg.setText(msg);
     }
 
     private void handleEvents() {
-        binding.btnConfirmation.setOnClickListener(view -> {
-            AddEditServerDataDialogFragment fragment = AddEditServerDataDialogFragment.newInstance("", "", "", true);
-            fragment.show(getParentFragmentManager(), AddEditServerDataDialogFragment.TAG);
+        binding.btnNo.setOnClickListener(v -> dismiss());
+
+        binding.btnYes.setOnClickListener(v -> {
+            viewModel.getYesDeleteClicked().setValue(true);
             dismiss();
         });
     }
