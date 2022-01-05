@@ -1,5 +1,6 @@
 package com.example.partosanatproject.retrofit;
 
+import com.example.partosanatproject.model.CaseResult;
 import com.example.partosanatproject.model.CaseTypeResult;
 import com.example.partosanatproject.model.UserResult;
 
@@ -32,4 +33,16 @@ public interface PartoSanatService {
 
     @GET("{path}")
     Call<CaseTypeResult> fetchCaseTypeInfo(@Path("path") String path, @Header("userLoginKey") String userLoginKey, @Query("caseTypeID") int caseTypeID);
+
+    @POST("{path}")
+    Call<CaseResult> addCase(@Path("path") String path, @Header("userLoginKey") String userLoginKey, @Body CaseResult.CaseInfo caseInfo);
+
+    @PUT("{path}")
+    Call<CaseResult> editCase(@Path("path") String path, @Header("userLoginKey") String userLoginKey, @Body CaseResult.CaseInfo caseInfo);
+
+    @GET("{path}")
+    Call<CaseResult> fetchCases(@Path("path") String path, @Header("userLoginKey") String userLoginKey, @Query("caseTypeID") int caseTypeID, @Query("search") String search, @Query("showAll") boolean showAll);
+
+    @GET("{path}")
+    Call<CaseResult> fetchCaseInfo(@Path("path") String path, @Header("userLoginKey") String userLoginKey, @Query("caseID") int caseID);
 }

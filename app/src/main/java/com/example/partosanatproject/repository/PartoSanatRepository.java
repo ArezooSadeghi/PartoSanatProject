@@ -6,9 +6,12 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.partosanatproject.R;
+import com.example.partosanatproject.model.CaseResult;
 import com.example.partosanatproject.model.CaseTypeResult;
 import com.example.partosanatproject.model.ServerData;
 import com.example.partosanatproject.model.UserResult;
+import com.example.partosanatproject.retrofit.CaseDeserializer;
 import com.example.partosanatproject.retrofit.CaseTypeDeserializer;
 import com.example.partosanatproject.retrofit.NoConnectivityException;
 import com.example.partosanatproject.retrofit.PartoSanatService;
@@ -43,6 +46,10 @@ public class PartoSanatRepository {
     private SingleLiveEvent<CaseTypeResult> addCaseTypeResultSingleLiveEvent = new SingleLiveEvent<>();
     private SingleLiveEvent<CaseTypeResult> editCaseTypeResultSingleLiveEvent = new SingleLiveEvent<>();
     private SingleLiveEvent<CaseTypeResult> deleteCaseTypeResultSingleLiveEvent = new SingleLiveEvent<>();
+    private SingleLiveEvent<CaseResult> casesResultSingleLiveEvent = new SingleLiveEvent<>();
+    private SingleLiveEvent<CaseResult> caseInfoResultSingleLiveEvent = new SingleLiveEvent<>();
+    private SingleLiveEvent<CaseResult> addCaseResultSingleLiveEvent = new SingleLiveEvent<>();
+    private SingleLiveEvent<CaseResult> editCaseResultSingleLiveEvent = new SingleLiveEvent<>();
     private LiveData<List<ServerData>> serverDataListMutableLiveData;
     private static final String TAG = PartoSanatRepository.class.getSimpleName();
 
@@ -58,6 +65,13 @@ public class PartoSanatRepository {
         partoSanatService = RetrofitInstance
                 .getRI(new TypeToken<CaseTypeResult>() {
                 }.getType(), new CaseTypeDeserializer(), context).create(PartoSanatService.class);
+    }
+
+    public void getPartoSanatServiceCaseResult(String baseUrl) {
+        RetrofitInstance.getNewBaseUrl(baseUrl);
+        partoSanatService = RetrofitInstance
+                .getRI(new TypeToken<CaseResult>() {
+                }.getType(), new CaseDeserializer(), context).create(PartoSanatService.class);
     }
 
     private PartoSanatRepository(Context context) {
@@ -90,10 +104,6 @@ public class PartoSanatRepository {
         return wrongIpAddressSingleLiveEvent;
     }
 
-    public LiveData<List<ServerData>> getServerDataListMutableLiveData() {
-        return serverDataListMutableLiveData;
-    }
-
     public SingleLiveEvent<CaseTypeResult> getCaseTypesResultSingleLiveEvent() {
         return caseTypesResultSingleLiveEvent;
     }
@@ -106,12 +116,32 @@ public class PartoSanatRepository {
         return addCaseTypeResultSingleLiveEvent;
     }
 
+    public SingleLiveEvent<CaseTypeResult> getEditCaseTypeResultSingleLiveEvent() {
+        return editCaseTypeResultSingleLiveEvent;
+    }
+
     public SingleLiveEvent<CaseTypeResult> getDeleteCaseTypeResultSingleLiveEvent() {
         return deleteCaseTypeResultSingleLiveEvent;
     }
 
-    public SingleLiveEvent<CaseTypeResult> getEditCaseTypeResultSingleLiveEvent() {
-        return editCaseTypeResultSingleLiveEvent;
+    public SingleLiveEvent<CaseResult> getAddCaseResultSingleLiveEvent() {
+        return addCaseResultSingleLiveEvent;
+    }
+
+    public SingleLiveEvent<CaseResult> getEditCaseResultSingleLiveEvent() {
+        return editCaseResultSingleLiveEvent;
+    }
+
+    public LiveData<List<ServerData>> getServerDataListMutableLiveData() {
+        return serverDataListMutableLiveData;
+    }
+
+    public SingleLiveEvent<CaseResult> getCasesResultSingleLiveEvent() {
+        return casesResultSingleLiveEvent;
+    }
+
+    public SingleLiveEvent<CaseResult> getCaseInfoResultSingleLiveEvent() {
+        return caseInfoResultSingleLiveEvent;
     }
 
     public void login(String path, UserResult.UserLoginParameter parameter) {
@@ -119,9 +149,9 @@ public class PartoSanatRepository {
 
             @Override
             public void onResponse(Call<UserResult> call, Response<UserResult> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful())
                     loginResultSingleLiveEvent.setValue(response.body());
-                } else {
+                else {
                     try {
                         Gson gson = new Gson();
                         UserResult userResult = gson.fromJson(response.errorBody().string(), UserResult.class);
@@ -134,13 +164,12 @@ public class PartoSanatRepository {
 
             @Override
             public void onFailure(Call<UserResult> call, Throwable t) {
-                if (t instanceof NoConnectivityException) {
+                if (t instanceof NoConnectivityException)
                     noConnectionExceptionHappenSingleLiveEvent.setValue(t.getMessage());
-                } else if (t instanceof SocketTimeoutException) {
-                    timeoutExceptionHappenSingleLiveEvent.setValue("اتصال به اینترنت با خطا مواجه شد");
-                } else {
-                    wrongIpAddressSingleLiveEvent.setValue("سرور موجود نمی باشد");
-                }
+                else if (t instanceof SocketTimeoutException)
+                    timeoutExceptionHappenSingleLiveEvent.setValue(context.getString(R.string.timeout_exception_error_msg));
+                else
+                    wrongIpAddressSingleLiveEvent.setValue(context.getString(R.string.wrong_ip_address_error_msg));
             }
         });
     }
@@ -149,9 +178,9 @@ public class PartoSanatRepository {
         partoSanatService.fetchCaseTypes(path, userLoginKey).enqueue(new Callback<CaseTypeResult>() {
             @Override
             public void onResponse(Call<CaseTypeResult> call, Response<CaseTypeResult> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful())
                     caseTypesResultSingleLiveEvent.setValue(response.body());
-                } else {
+                else {
                     try {
                         Gson gson = new Gson();
                         CaseTypeResult caseTypeResult = gson.fromJson(response.errorBody().string(), CaseTypeResult.class);
@@ -164,13 +193,12 @@ public class PartoSanatRepository {
 
             @Override
             public void onFailure(Call<CaseTypeResult> call, Throwable t) {
-                if (t instanceof NoConnectivityException) {
+                if (t instanceof NoConnectivityException)
                     noConnectionExceptionHappenSingleLiveEvent.setValue(t.getMessage());
-                } else if (t instanceof SocketTimeoutException) {
-                    timeoutExceptionHappenSingleLiveEvent.setValue("اتصال به اینترنت با خطا مواجه شد");
-                } else {
-                    wrongIpAddressSingleLiveEvent.setValue("سرور موجود نمی باشد");
-                }
+                else if (t instanceof SocketTimeoutException)
+                    timeoutExceptionHappenSingleLiveEvent.setValue(context.getString(R.string.timeout_exception_error_msg));
+                else
+                    Log.e(TAG, t.getMessage());
             }
         });
     }
@@ -179,9 +207,9 @@ public class PartoSanatRepository {
         partoSanatService.fetchCaseTypeInfo(path, userLoginKey, caseTypeID).enqueue(new Callback<CaseTypeResult>() {
             @Override
             public void onResponse(Call<CaseTypeResult> call, Response<CaseTypeResult> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful())
                     caseTypeInfoResultSingleLiveEvent.setValue(response.body());
-                } else {
+                else {
                     try {
                         Gson gson = new Gson();
                         CaseTypeResult caseTypeResult = gson.fromJson(response.errorBody().string(), CaseTypeResult.class);
@@ -194,13 +222,12 @@ public class PartoSanatRepository {
 
             @Override
             public void onFailure(Call<CaseTypeResult> call, Throwable t) {
-                if (t instanceof NoConnectivityException) {
+                if (t instanceof NoConnectivityException)
                     noConnectionExceptionHappenSingleLiveEvent.setValue(t.getMessage());
-                } else if (t instanceof SocketTimeoutException) {
-                    timeoutExceptionHappenSingleLiveEvent.setValue("اتصال به اینترنت با خطا مواجه شد");
-                } else {
-                    wrongIpAddressSingleLiveEvent.setValue("سرور موجود نمی باشد");
-                }
+                else if (t instanceof SocketTimeoutException)
+                    timeoutExceptionHappenSingleLiveEvent.setValue(context.getString(R.string.timeout_exception_error_msg));
+                else
+                    Log.e(TAG, t.getMessage());
             }
         });
     }
@@ -209,9 +236,9 @@ public class PartoSanatRepository {
         partoSanatService.addCaseType(path, userLoginKey, caseTypeInfo).enqueue(new Callback<CaseTypeResult>() {
             @Override
             public void onResponse(Call<CaseTypeResult> call, Response<CaseTypeResult> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful())
                     addCaseTypeResultSingleLiveEvent.setValue(response.body());
-                } else {
+                else {
                     try {
                         Gson gson = new Gson();
                         CaseTypeResult caseTypeResult = gson.fromJson(response.errorBody().string(), CaseTypeResult.class);
@@ -224,13 +251,12 @@ public class PartoSanatRepository {
 
             @Override
             public void onFailure(Call<CaseTypeResult> call, Throwable t) {
-                if (t instanceof NoConnectivityException) {
+                if (t instanceof NoConnectivityException)
                     noConnectionExceptionHappenSingleLiveEvent.setValue(t.getMessage());
-                } else if (t instanceof SocketTimeoutException) {
-                    timeoutExceptionHappenSingleLiveEvent.setValue("اتصال به اینترنت با خطا مواجه شد");
-                } else {
-                    wrongIpAddressSingleLiveEvent.setValue("سرور موجود نمی باشد");
-                }
+                else if (t instanceof SocketTimeoutException)
+                    timeoutExceptionHappenSingleLiveEvent.setValue(context.getString(R.string.timeout_exception_error_msg));
+                else
+                    Log.e(TAG, t.getMessage());
             }
         });
     }
@@ -239,9 +265,9 @@ public class PartoSanatRepository {
         partoSanatService.editCaseType(path, userLoginKey, caseTypeInfo).enqueue(new Callback<CaseTypeResult>() {
             @Override
             public void onResponse(Call<CaseTypeResult> call, Response<CaseTypeResult> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful())
                     editCaseTypeResultSingleLiveEvent.setValue(response.body());
-                } else {
+                else {
                     try {
                         Gson gson = new Gson();
                         CaseTypeResult caseTypeResult = gson.fromJson(response.errorBody().string(), CaseTypeResult.class);
@@ -254,13 +280,12 @@ public class PartoSanatRepository {
 
             @Override
             public void onFailure(Call<CaseTypeResult> call, Throwable t) {
-                if (t instanceof NoConnectivityException) {
+                if (t instanceof NoConnectivityException)
                     noConnectionExceptionHappenSingleLiveEvent.setValue(t.getMessage());
-                } else if (t instanceof SocketTimeoutException) {
-                    timeoutExceptionHappenSingleLiveEvent.setValue("اتصال به اینترنت با خطا مواجه شد");
-                } else {
-                    wrongIpAddressSingleLiveEvent.setValue("سرور موجود نمی باشد");
-                }
+                else if (t instanceof SocketTimeoutException)
+                    timeoutExceptionHappenSingleLiveEvent.setValue(context.getString(R.string.timeout_exception_error_msg));
+                else
+                    Log.e(TAG, t.getMessage());
             }
         });
     }
@@ -269,9 +294,9 @@ public class PartoSanatRepository {
         partoSanatService.deleteCaseType(path, userLoginKey, caseTypeID).enqueue(new Callback<CaseTypeResult>() {
             @Override
             public void onResponse(Call<CaseTypeResult> call, Response<CaseTypeResult> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful())
                     deleteCaseTypeResultSingleLiveEvent.setValue(response.body());
-                } else {
+                else {
                     try {
                         Gson gson = new Gson();
                         CaseTypeResult caseTypeResult = gson.fromJson(response.errorBody().string(), CaseTypeResult.class);
@@ -284,13 +309,128 @@ public class PartoSanatRepository {
 
             @Override
             public void onFailure(Call<CaseTypeResult> call, Throwable t) {
-                if (t instanceof NoConnectivityException) {
+                if (t instanceof NoConnectivityException)
                     noConnectionExceptionHappenSingleLiveEvent.setValue(t.getMessage());
-                } else if (t instanceof SocketTimeoutException) {
-                    timeoutExceptionHappenSingleLiveEvent.setValue("اتصال به اینترنت با خطا مواجه شد");
-                } else {
-                    wrongIpAddressSingleLiveEvent.setValue("سرور موجود نمی باشد");
+                else if (t instanceof SocketTimeoutException)
+                    timeoutExceptionHappenSingleLiveEvent.setValue(context.getString(R.string.timeout_exception_error_msg));
+                else
+                    Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    public void addCase(String path, String userLoginKey, CaseResult.CaseInfo caseInfo) {
+        partoSanatService.addCase(path, userLoginKey, caseInfo).enqueue(new Callback<CaseResult>() {
+            @Override
+            public void onResponse(Call<CaseResult> call, Response<CaseResult> response) {
+                if (response.isSuccessful())
+                    addCaseResultSingleLiveEvent.setValue(response.body());
+                else {
+                    try {
+                        Gson gson = new Gson();
+                        CaseResult caseResult = gson.fromJson(response.errorBody().string(), CaseResult.class);
+                        addCaseResultSingleLiveEvent.setValue(caseResult);
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage());
+                    }
                 }
+            }
+
+            @Override
+            public void onFailure(Call<CaseResult> call, Throwable t) {
+                if (t instanceof NoConnectivityException)
+                    noConnectionExceptionHappenSingleLiveEvent.setValue(t.getMessage());
+                else if (t instanceof SocketTimeoutException)
+                    timeoutExceptionHappenSingleLiveEvent.setValue("اتصال به اینترنت با خطا مواجه شد");
+                else
+                    Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    public void editCase(String path, String userLoginKey, CaseResult.CaseInfo caseInfo) {
+        partoSanatService.editCase(path, userLoginKey, caseInfo).enqueue(new Callback<CaseResult>() {
+            @Override
+            public void onResponse(Call<CaseResult> call, Response<CaseResult> response) {
+                if (response.isSuccessful())
+                    editCaseResultSingleLiveEvent.setValue(response.body());
+                else {
+                    try {
+                        Gson gson = new Gson();
+                        CaseResult caseResult = gson.fromJson(response.errorBody().string(), CaseResult.class);
+                        editCaseResultSingleLiveEvent.setValue(caseResult);
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CaseResult> call, Throwable t) {
+                if (t instanceof NoConnectivityException)
+                    noConnectionExceptionHappenSingleLiveEvent.setValue(t.getMessage());
+                else if (t instanceof SocketTimeoutException)
+                    timeoutExceptionHappenSingleLiveEvent.setValue(context.getString(R.string.timeout_exception_error_msg));
+                else
+                    Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    public void fetchCases(String path, String userLoginKey, int caseTypeID, String search, boolean showAll) {
+        partoSanatService.fetchCases(path, userLoginKey, caseTypeID, search, showAll).enqueue(new Callback<CaseResult>() {
+            @Override
+            public void onResponse(Call<CaseResult> call, Response<CaseResult> response) {
+                if (response.isSuccessful())
+                    casesResultSingleLiveEvent.setValue(response.body());
+                else {
+                    try {
+                        Gson gson = new Gson();
+                        CaseResult caseResult = gson.fromJson(response.errorBody().string(), CaseResult.class);
+                        casesResultSingleLiveEvent.setValue(caseResult);
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CaseResult> call, Throwable t) {
+                if (t instanceof NoConnectivityException)
+                    noConnectionExceptionHappenSingleLiveEvent.setValue(t.getMessage());
+                else if (t instanceof SocketTimeoutException)
+                    timeoutExceptionHappenSingleLiveEvent.setValue(context.getString(R.string.timeout_exception_error_msg));
+                else
+                    Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    public void fetchCaseInfo(String path, String userLoginKey, int caseID) {
+        partoSanatService.fetchCaseInfo(path, userLoginKey, caseID).enqueue(new Callback<CaseResult>() {
+            @Override
+            public void onResponse(Call<CaseResult> call, Response<CaseResult> response) {
+                if (response.isSuccessful())
+                    caseInfoResultSingleLiveEvent.setValue(response.body());
+                else {
+                    try {
+                        Gson gson = new Gson();
+                        CaseResult caseResult = gson.fromJson(response.errorBody().string(), CaseResult.class);
+                        caseInfoResultSingleLiveEvent.setValue(caseResult);
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CaseResult> call, Throwable t) {
+                if (t instanceof NoConnectivityException)
+                    noConnectionExceptionHappenSingleLiveEvent.setValue(t.getMessage());
+                else if (t instanceof SocketTimeoutException)
+                    timeoutExceptionHappenSingleLiveEvent.setValue(context.getString(R.string.timeout_exception_error_msg));
+                else
+                    Log.e(TAG, t.getMessage());
             }
         });
     }

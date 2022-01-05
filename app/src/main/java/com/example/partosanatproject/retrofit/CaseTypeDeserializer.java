@@ -11,7 +11,6 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 
 public class CaseTypeDeserializer implements JsonDeserializer<CaseTypeResult> {
-
     @Override
     public CaseTypeResult deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject bodyObject = json.getAsJsonObject();

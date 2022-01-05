@@ -27,4 +27,6 @@
     <string name="log_out_item_title">خروج از حساب کاربری</string>
     <string name="case_types_item_title">گروه ها</string>
     <string name="fill_case_type_name">لطفا نام گروه را وارد کنید</string>
+    <string name="timeout_exception_error_msg">اتصال به اینترنت با خطا مواجه شد</string>
+    <string name="wrong_ip_address_error_msg">سرور موجود می باشد</string>
 </resources>

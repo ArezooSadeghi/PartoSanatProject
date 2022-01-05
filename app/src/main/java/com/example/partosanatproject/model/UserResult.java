@@ -1,25 +1,7 @@
 package com.example.partosanatproject.model;
 
-public class UserResult {
-    private String error;
-    private String errorCode;
+public class UserResult extends ResultInfo {
     private UserInfo[] users;
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
 
     public UserInfo[] getUsers() {
         return users;
@@ -30,6 +12,15 @@ public class UserResult {
     }
 
     public class UserInfo {
+        private int userID;
+        private int defaultStoreLocationID;
+        private int saveDefaultStoreLocationID;
+        private int usersGroupID;
+        private boolean postEnabled;
+        private boolean disableAccount;
+        private boolean disableUSB;
+        private boolean cannotChangePassword;
+        private boolean editAnotherUserData;
         private String userName;
         private String password;
         private String fullName;
@@ -45,15 +36,78 @@ public class UserResult {
         private ExecutiveAccess executive;
         private FunctionAccess function;
         private CrmAccess crmAccess;
-        private boolean editAnotherUserData;
-        private boolean cannotChangePassword;
-        private boolean disableAccount;
-        private boolean disableUSB;
-        private boolean postEnabled;
-        private int usersGroupID;
-        private int userID;
-        private int defaultStoreLocationID;
-        private int saveDefaultStoreLocationID;
+
+        public int getUserID() {
+            return userID;
+        }
+
+        public void setUserID(int userID) {
+            this.userID = userID;
+        }
+
+        public int getDefaultStoreLocationID() {
+            return defaultStoreLocationID;
+        }
+
+        public void setDefaultStoreLocationID(int defaultStoreLocationID) {
+            this.defaultStoreLocationID = defaultStoreLocationID;
+        }
+
+        public int getSaveDefaultStoreLocationID() {
+            return saveDefaultStoreLocationID;
+        }
+
+        public void setSaveDefaultStoreLocationID(int saveDefaultStoreLocationID) {
+            this.saveDefaultStoreLocationID = saveDefaultStoreLocationID;
+        }
+
+        public int getUsersGroupID() {
+            return usersGroupID;
+        }
+
+        public void setUsersGroupID(int usersGroupID) {
+            this.usersGroupID = usersGroupID;
+        }
+
+        public boolean isPostEnabled() {
+            return postEnabled;
+        }
+
+        public void setPostEnabled(boolean postEnabled) {
+            this.postEnabled = postEnabled;
+        }
+
+        public boolean isDisableAccount() {
+            return disableAccount;
+        }
+
+        public void setDisableAccount(boolean disableAccount) {
+            this.disableAccount = disableAccount;
+        }
+
+        public boolean isDisableUSB() {
+            return disableUSB;
+        }
+
+        public void setDisableUSB(boolean disableUSB) {
+            this.disableUSB = disableUSB;
+        }
+
+        public boolean isCannotChangePassword() {
+            return cannotChangePassword;
+        }
+
+        public void setCannotChangePassword(boolean cannotChangePassword) {
+            this.cannotChangePassword = cannotChangePassword;
+        }
+
+        public boolean isEditAnotherUserData() {
+            return editAnotherUserData;
+        }
+
+        public void setEditAnotherUserData(boolean editAnotherUserData) {
+            this.editAnotherUserData = editAnotherUserData;
+        }
 
         public String getUserName() {
             return userName;
@@ -175,205 +229,133 @@ public class UserResult {
             this.crmAccess = crmAccess;
         }
 
-        public boolean isEditAnotherUserData() {
-            return editAnotherUserData;
-        }
+        public class ManagerAccess {
+            private boolean managerExternalOrder;
+            private boolean managerOrderOK;
+            private boolean managerShipping;
+            private boolean managerInternalOrder;
+            private boolean managerBoardOrder;
+            private boolean managerSKD;
+            private boolean manager3R;
+            private boolean managerStore;
+            private boolean managerQC;
+            private boolean managerAssemble;
+            private boolean managerMRP;
+            private boolean managerRepairInstall;
+            private boolean managerPRD;
+            private boolean accessSalesProductionReport;
 
-        public void setEditAnotherUserData(boolean editAnotherUserData) {
-            this.editAnotherUserData = editAnotherUserData;
-        }
+            public boolean isManagerExternalOrder() {
+                return managerExternalOrder;
+            }
 
-        public boolean isCannotChangePassword() {
-            return cannotChangePassword;
-        }
+            public void setManagerExternalOrder(boolean managerExternalOrder) {
+                this.managerExternalOrder = managerExternalOrder;
+            }
 
-        public void setCannotChangePassword(boolean cannotChangePassword) {
-            this.cannotChangePassword = cannotChangePassword;
-        }
+            public boolean isManagerOrderOK() {
+                return managerOrderOK;
+            }
 
-        public boolean isDisableAccount() {
-            return disableAccount;
-        }
+            public void setManagerOrderOK(boolean managerOrderOK) {
+                this.managerOrderOK = managerOrderOK;
+            }
 
-        public void setDisableAccount(boolean disableAccount) {
-            this.disableAccount = disableAccount;
-        }
+            public boolean isManagerShipping() {
+                return managerShipping;
+            }
 
-        public boolean isDisableUSB() {
-            return disableUSB;
-        }
+            public void setManagerShipping(boolean managerShipping) {
+                this.managerShipping = managerShipping;
+            }
 
-        public void setDisableUSB(boolean disableUSB) {
-            this.disableUSB = disableUSB;
-        }
+            public boolean isManagerInternalOrder() {
+                return managerInternalOrder;
+            }
 
-        public boolean isPostEnabled() {
-            return postEnabled;
-        }
+            public void setManagerInternalOrder(boolean managerInternalOrder) {
+                this.managerInternalOrder = managerInternalOrder;
+            }
 
-        public void setPostEnabled(boolean postEnabled) {
-            this.postEnabled = postEnabled;
-        }
+            public boolean isManagerBoardOrder() {
+                return managerBoardOrder;
+            }
 
-        public int getUsersGroupID() {
-            return usersGroupID;
-        }
+            public void setManagerBoardOrder(boolean managerBoardOrder) {
+                this.managerBoardOrder = managerBoardOrder;
+            }
 
-        public void setUsersGroupID(int usersGroupID) {
-            this.usersGroupID = usersGroupID;
-        }
+            public boolean isManagerSKD() {
+                return managerSKD;
+            }
 
-        public int getUserID() {
-            return userID;
-        }
+            public void setManagerSKD(boolean managerSKD) {
+                this.managerSKD = managerSKD;
+            }
 
-        public void setUserID(int userID) {
-            this.userID = userID;
-        }
+            public boolean isManager3R() {
+                return manager3R;
+            }
 
-        public int getDefaultStoreLocationID() {
-            return defaultStoreLocationID;
-        }
+            public void setManager3R(boolean manager3R) {
+                this.manager3R = manager3R;
+            }
 
-        public void setDefaultStoreLocationID(int defaultStoreLocationID) {
-            this.defaultStoreLocationID = defaultStoreLocationID;
-        }
+            public boolean isManagerStore() {
+                return managerStore;
+            }
 
-        public int getSaveDefaultStoreLocationID() {
-            return saveDefaultStoreLocationID;
-        }
+            public void setManagerStore(boolean managerStore) {
+                this.managerStore = managerStore;
+            }
 
-        public void setSaveDefaultStoreLocationID(int saveDefaultStoreLocationID) {
-            this.saveDefaultStoreLocationID = saveDefaultStoreLocationID;
-        }
-    }
+            public boolean isManagerQC() {
+                return managerQC;
+            }
 
-    public class ManagerAccess {
-        private boolean managerExternalOrder;
-        private boolean managerOrderOK;
-        private boolean managerShipping;
-        private boolean managerInternalOrder;
-        private boolean managerBoardOrder;
-        private boolean managerSKD;
-        private boolean manager3R;
-        private boolean managerStore;
-        private boolean managerQC;
-        private boolean managerAssemble;
-        private boolean managerMRP;
-        private boolean managerRepairInstall;
-        private boolean managerPRD;
-        private boolean accessSalesProductionReport;
+            public void setManagerQC(boolean managerQC) {
+                this.managerQC = managerQC;
+            }
 
-        public boolean isManagerExternalOrder() {
-            return managerExternalOrder;
-        }
+            public boolean isManagerAssemble() {
+                return managerAssemble;
+            }
 
-        public void setManagerExternalOrder(boolean managerExternalOrder) {
-            this.managerExternalOrder = managerExternalOrder;
-        }
+            public void setManagerAssemble(boolean managerAssemble) {
+                this.managerAssemble = managerAssemble;
+            }
 
-        public boolean isManagerOrderOK() {
-            return managerOrderOK;
-        }
+            public boolean isManagerMRP() {
+                return managerMRP;
+            }
 
-        public void setManagerOrderOK(boolean managerOrderOK) {
-            this.managerOrderOK = managerOrderOK;
-        }
+            public void setManagerMRP(boolean managerMRP) {
+                this.managerMRP = managerMRP;
+            }
 
-        public boolean isManagerShipping() {
-            return managerShipping;
-        }
+            public boolean isManagerRepairInstall() {
+                return managerRepairInstall;
+            }
 
-        public void setManagerShipping(boolean managerShipping) {
-            this.managerShipping = managerShipping;
-        }
+            public void setManagerRepairInstall(boolean managerRepairInstall) {
+                this.managerRepairInstall = managerRepairInstall;
+            }
 
-        public boolean isManagerInternalOrder() {
-            return managerInternalOrder;
-        }
+            public boolean isManagerPRD() {
+                return managerPRD;
+            }
 
-        public void setManagerInternalOrder(boolean managerInternalOrder) {
-            this.managerInternalOrder = managerInternalOrder;
-        }
+            public void setManagerPRD(boolean managerPRD) {
+                this.managerPRD = managerPRD;
+            }
 
-        public boolean isManagerBoardOrder() {
-            return managerBoardOrder;
-        }
+            public boolean isAccessSalesProductionReport() {
+                return accessSalesProductionReport;
+            }
 
-        public void setManagerBoardOrder(boolean managerBoardOrder) {
-            this.managerBoardOrder = managerBoardOrder;
-        }
-
-        public boolean isManagerSKD() {
-            return managerSKD;
-        }
-
-        public void setManagerSKD(boolean managerSKD) {
-            this.managerSKD = managerSKD;
-        }
-
-        public boolean isManager3R() {
-            return manager3R;
-        }
-
-        public void setManager3R(boolean manager3R) {
-            this.manager3R = manager3R;
-        }
-
-        public boolean isManagerStore() {
-            return managerStore;
-        }
-
-        public void setManagerStore(boolean managerStore) {
-            this.managerStore = managerStore;
-        }
-
-        public boolean isManagerQC() {
-            return managerQC;
-        }
-
-        public void setManagerQC(boolean managerQC) {
-            this.managerQC = managerQC;
-        }
-
-        public boolean isManagerAssemble() {
-            return managerAssemble;
-        }
-
-        public void setManagerAssemble(boolean managerAssemble) {
-            this.managerAssemble = managerAssemble;
-        }
-
-        public boolean isManagerMRP() {
-            return managerMRP;
-        }
-
-        public void setManagerMRP(boolean managerMRP) {
-            this.managerMRP = managerMRP;
-        }
-
-        public boolean isManagerRepairInstall() {
-            return managerRepairInstall;
-        }
-
-        public void setManagerRepairInstall(boolean managerRepairInstall) {
-            this.managerRepairInstall = managerRepairInstall;
-        }
-
-        public boolean isManagerPRD() {
-            return managerPRD;
-        }
-
-        public void setManagerPRD(boolean managerPRD) {
-            this.managerPRD = managerPRD;
-        }
-
-        public boolean isAccessSalesProductionReport() {
-            return accessSalesProductionReport;
-        }
-
-        public void setAccessSalesProductionReport(boolean accessSalesProductionReport) {
-            this.accessSalesProductionReport = accessSalesProductionReport;
+            public void setAccessSalesProductionReport(boolean accessSalesProductionReport) {
+                this.accessSalesProductionReport = accessSalesProductionReport;
+            }
         }
     }
 
@@ -612,14 +594,22 @@ public class UserResult {
     }
 
     public class CrmAccess {
+        private int accessContract;
         private boolean accessCustomers;
         private boolean accessCustomersManager;
         private boolean accessProforma;
         private boolean accessProformaManager;
-        private int accessContract;
         private boolean accessContractManager;
         private boolean accessFinance;
         private boolean accessFinanceManager;
+
+        public int getAccessContract() {
+            return accessContract;
+        }
+
+        public void setAccessContract(int accessContract) {
+            this.accessContract = accessContract;
+        }
 
         public boolean isAccessCustomers() {
             return accessCustomers;
@@ -653,14 +643,6 @@ public class UserResult {
             this.accessProformaManager = accessProformaManager;
         }
 
-        public int getAccessContract() {
-            return accessContract;
-        }
-
-        public void setAccessContract(int accessContract) {
-            this.accessContract = accessContract;
-        }
-
         public boolean isAccessContractManager() {
             return accessContractManager;
         }
@@ -687,13 +669,21 @@ public class UserResult {
     }
 
     public class UserLoginParameter {
+        private int version;
         private String userName;
         private String password;
-        private int version;
 
-        public UserLoginParameter(String userName, String password, int version) {
+        public UserLoginParameter(int version, String userName, String password) {
+            this.version = version;
             this.userName = userName;
             this.password = password;
+        }
+
+        public int getVersion() {
+            return version;
+        }
+
+        public void setVersion(int version) {
             this.version = version;
         }
 
@@ -711,14 +701,6 @@ public class UserResult {
 
         public void setPassword(String password) {
             this.password = password;
-        }
-
-        public int getVersion() {
-            return version;
-        }
-
-        public void setVersion(int version) {
-            this.version = version;
         }
     }
 }

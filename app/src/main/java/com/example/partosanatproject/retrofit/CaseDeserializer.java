@@ -1,6 +1,6 @@
 package com.example.partosanatproject.retrofit;
 
-import com.example.partosanatproject.model.UserResult;
+import com.example.partosanatproject.model.CaseResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -10,11 +10,11 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-public class UserResultDeserializer implements JsonDeserializer<UserResult> {
+public class CaseDeserializer implements JsonDeserializer<CaseResult> {
     @Override
-    public UserResult deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public CaseResult deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject bodyObject = json.getAsJsonObject();
         Gson gson = new Gson();
-        return gson.fromJson(bodyObject.toString(), UserResult.class);
+        return gson.fromJson(bodyObject.toString(), CaseResult.class);
     }
 }

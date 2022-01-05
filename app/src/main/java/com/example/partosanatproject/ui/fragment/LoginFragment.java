@@ -97,7 +97,7 @@ public class LoginFragment extends Fragment {
                 String password = binding.edTextPassword.getText().toString();
 
                 int version = 14000925;
-                UserResult.UserLoginParameter parameter = new UserResult().new UserLoginParameter(userName, password, version);
+                UserResult.UserLoginParameter parameter = new UserResult().new UserLoginParameter(version, userName, password);
                 login(parameter);
             }
         });
